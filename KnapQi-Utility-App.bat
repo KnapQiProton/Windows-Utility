@@ -1,39 +1,27 @@
 @echo off
 :: ========================================================================
-:: AUTO-ELEVATE TO ADMINISTRATOR
+:: AUTO-ELEVATE TO ADMINISTRATOR (FIXED)
 :: ========================================================================
-:init
-setlocal DisableDelayedExpansion
-set "batchPath=%~0"
-for %%k in (%0) do set batchName=%%~nk
-set "vbsGetPrivileges=%temp%\OEgetPriv_%batchName%.vbs"
-setlocal EnableDelayedExpansion
-
-:checkPrivileges
-NET FILE 1>NUL 2>NUL
-if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
-
-:getPrivileges
-if '%1'=='ELEV' (echo ELEV & shift /1 & goto gotPrivileges)
-echo Set UAC = CreateObject^("Shell.Application"^) > "%vbsGetPrivileges%"
-echo args = "ELEV " >> "%vbsGetPrivileges%"
-echo For Each strArg in WScript.Arguments >> "%vbsGetPrivileges%"
-echo args = args ^& strArg ^& " "  >> "%vbsGetPrivileges%"
-echo Next >> "%vbsGetPrivileges%"
-echo UAC.ShellExecute "!batchPath!", args, "", "runas", 1 >> "%vbsGetPrivileges%"
-"%SystemRoot%\System32\WScript.exe" "%vbsGetPrivileges%" %*
-exit /B
+:check_admin
+NET SESSION >nul 2>&1
+if %errorLevel% == 0 (
+    goto gotPrivileges
+) else (
+    echo [+] Requesting Administrator privileges...
+    powershell -Command "Start-Process -FilePath '%0' -Verb RunAs"
+    exit /b
+)
 
 :gotPrivileges
-setlocal & pushd %~dp0
-if exist "%vbsGetPrivileges%" ( del "%vbsGetPrivileges%" )
+:: Memastikan script berjalan di folder aslinya
+cd /d "%~dp0"
 
 :: ========================================================================
 :: CONFIGURATION
 :: ========================================================================
-title KNAPQI MULTIVERSE INTERFACE - ADMIN EDITION V12.3
+title KNAPQI MULTIVERSE INTERFACE - ADMIN FIXED V12.4
 mode con: cols=80 lines=40
-set "version=12.3"
+set "version=12.4"
 set "webhook_url=https://discord.com/api/webhooks/1455213173882753097/XihcbnWOY33qenhS-PW94Ibfkye9G-uBArL2CsiLUBmXG5gOF_zjq61nIEj7pc27yisq"
 set "update_url=https://raw.githubusercontent.com/KnapQiProton/Windows-Utility/refs/heads/main/KnapQi-Utility-App.bat"
 
@@ -76,7 +64,7 @@ if "%main_choice%"=="11" exit
 goto main_menu
 
 :: ========================================================================
-:: [10] UPDATE SYSTEM LOGIC (RENAME ^& ARCHIVE)
+:: [10] UPDATE SYSTEM LOGIC
 :: ========================================================================
 :update_system
 cls
@@ -86,15 +74,11 @@ echo                       SYSTEM UPDATE MANAGER
 echo ========================================================================
 echo.
 echo [+] Connecting to KnapQi GitHub Repository...
-echo [+] Current Version: %version%
-echo.
 curl -L -s -o "KnapQi-Updated-Version.bat" "%update_url%"
 if exist "KnapQi-Updated-Version.bat" (
     echo [+] New version downloaded successfully.
     echo [+] Archiving current version to 'Legacy-Version.old'...
     start /b "" cmd /c "ping 127.0.0.1 -n 2 > nul & ren ""%~nx0"" ""Legacy-Version.old"" & start KnapQi-Updated-Version.bat"
-    echo [+] Update complete! Restarting...
-    timeout /t 2 > nul
     exit
 ) else (
     echo [-] ERROR: Gagal terhubung ke GitHub.
@@ -103,18 +87,14 @@ if exist "KnapQi-Updated-Version.bat" (
 )
 
 :: ========================================================================
-:: SUB-MENUS (SAMA SEPERTI SEBELUMNYA)
+:: SUB-MENUS (1-9 Tetap Sama)
 :: ========================================================================
 :cat_file
 cls
-color 03
 echo [ CATEGORY: CRACK FILE ]
 echo.
-echo    [1] 4download.net
-echo    [2] Yasir252.com
-echo    [3] [BACK TO MAIN MENU]
-echo.
-set /p "fc=[?] SELECT TARGET: "
+echo    [1] 4download.net ^| [2] Yasir252.com ^| [3] BACK
+set /p "fc=[?] SELECT: "
 if "%fc%"=="1" start "" "https://4download.net/" & goto cat_file
 if "%fc%"=="2" start "" "https://www.yasir252.com/" & goto cat_file
 if "%fc%"=="3" goto main_menu
@@ -122,12 +102,10 @@ goto cat_file
 
 :cat_game
 cls
-color 0c
 echo [ CATEGORY: CRACK GAME ]
-echo    [1] SteamRIP.com
-echo    [2] SteamUnlocked.net
-echo    [3] [BACK TO MAIN MENU]
-set /p "gc=[?] SELECT TARGET: "
+echo.
+echo    [1] SteamRIP.com ^| [2] SteamUnlocked.net ^| [3] BACK
+set /p "gc=[?] SELECT: "
 if "%gc%"=="1" start "" "https://steamrip.com/" & goto cat_game
 if "%gc%"=="2" start "" "https://steamunlocked.net/" & goto cat_game
 if "%gc%"=="3" goto main_menu
@@ -135,35 +113,30 @@ goto cat_game
 
 :cat_activation
 cls
-color 0a
 echo [ CATEGORY: SYSTEM ACTIVATION ]
-echo    [1] RUN MAS (Online Activation)
-echo    [2] [BACK TO MAIN MENU]
-set /p "ac=[?] SELECT ACTION: "
+echo.
+echo    [1] RUN MAS ^| [2] BACK
+set /p "ac=[?] SELECT: "
 if "%ac%"=="1" powershell -Command "irm https://get.activated.win | iex" & pause & goto cat_activation
 if "%ac%"=="2" goto main_menu
 goto cat_activation
 
 :cat_iso
 cls
-color 09
 echo [ CATEGORY: WINDOWS ISO ]
-echo    [1] Open Massgrave Genuine Media
-echo    [2] [BACK TO MAIN MENU]
-set /p "ic=[?] SELECT ACTION: "
+echo.
+echo    [1] Open Massgrave ^| [2] BACK
+set /p "ic=[?] SELECT: "
 if "%ic%"=="1" start "" "https://massgrave.dev/genuine-installation-media" & goto cat_iso
 if "%ic%"=="2" goto main_menu
 goto cat_iso
 
 :cat_burner_direct
 cls
-color 0b
 echo [ CATEGORY: BOOTABLE TOOLS ]
-echo    [1] DOWNLOAD RUFUS
-echo    [2] DOWNLOAD VENTOY
-echo    [3] DOWNLOAD BALENA ETCHER
-echo    [4] [BACK TO MAIN MENU]
-set /p "bc=[?] SELECT TOOL: "
+echo.
+echo    [1] RUFUS ^| [2] VENTOY ^| [3] BALENA ^| [4] BACK
+set /p "bc=[?] SELECT: "
 if "%bc%"=="1" curl -L -o "rufus.exe" "https://github.com/pbatard/rufus/releases/download/v4.4/rufus-4.4p.exe" & pause & goto cat_burner_direct
 if "%bc%"=="2" curl -L -o "ventoy.zip" "https://github.com/ventoy/Ventoy/releases/download/v1.0.99/ventoy-1.0.99-windows.zip" & pause & goto cat_burner_direct
 if "%bc%"=="3" curl -L -o "balena.exe" "https://github.com/balena-io/etcher/releases/download/v1.18.11/balenaEtcher-Portable-1.18.11.exe" & pause & goto cat_burner_direct
@@ -172,12 +145,10 @@ goto cat_burner_direct
 
 :cat_privacy
 cls
-color 0b
 echo [ CATEGORY: PRIVACY TOOLS ]
-echo    [1] DOWNLOAD LIBREWOLF
-echo    [2] DOWNLOAD OPENVPN
-echo    [3] [BACK TO MAIN MENU]
-set /p "pc=[?] SELECT TOOL: "
+echo.
+echo    [1] LIBREWOLF ^| [2] OPENVPN ^| [3] BACK
+set /p "pc=[?] SELECT: "
 if "%pc%"=="1" curl -L -o "librewolf_setup.exe" "https://gitlab.com/api/v4/projects/24386000/packages/generic/librewolf/124.0.1-1/librewolf-124.0.1-1-windows-x86_64-setup.exe" & pause & goto cat_privacy
 if "%pc%"=="2" curl -L -o "openvpn_setup.msi" "https://swupdate.openvpn.org/community/releases/OpenVPN-2.6.9-I001-amd64.msi" & pause & goto cat_privacy
 if "%pc%"=="3" goto main_menu
@@ -185,23 +156,20 @@ goto cat_privacy
 
 :cat_utility
 cls
-color 0b
 echo [ CATEGORY: WINDOWS UTILITY ]
-echo    [1] DOWNLOAD CPU-Z
-echo    [2] [BACK TO MAIN MENU]
-set /p "uc=[?] SELECT TOOL: "
+echo.
+echo    [1] CPU-Z ^| [2] BACK
+set /p "uc=[?] SELECT: "
 if "%uc%"=="1" curl -L -o "cpuz.zip" "https://download.cpuid.com/cpu-z/cpu-z_2.09-en.zip" & pause & goto cat_utility
 if "%uc%"=="2" goto main_menu
 goto cat_utility
 
 :cat_search
 cls
-color 0e
 echo [ CATEGORY: SEARCH ENGINE ]
-echo    [1] Google
-echo    [2] DuckDuckGo
-echo    [3] [BACK TO MAIN MENU]
-set /p "sc=[?] SELECT TARGET: "
+echo.
+echo    [1] Google ^| [2] DuckDuckGo ^| [3] BACK
+set /p "sc=[?] SELECT: "
 if "%sc%"=="1" start "" "https://www.google.com" & goto cat_search
 if "%sc%"=="2" start "" "https://duckduckgo.com" & goto cat_search
 if "%sc%"=="3" goto main_menu
@@ -214,14 +182,11 @@ echo ========================================================================
 echo                      SYSTEM OWNER INFORMATION
 echo ========================================================================
 echo.
-echo    IDENTITITY : KnapQi
-echo    VERSION    : %version% ^| ADMIN MODE: ACTIVE
-echo.
-echo    "Too perfect to be controlled, too broken to be fixed."
+echo    IDENTITITY : KnapQi ^| ROLE : Multiverse Dev
+echo    VERSION    : %version% ^| ADMIN : YES
 echo.
 echo ========================================================================
-echo    [F] GIVE FEEDBACK (Direct to Discord)
-echo    [M] BACK TO MENU
+echo    [F] GIVE FEEDBACK ^| [M] BACK
 echo ========================================================================
 set /p "oc=[?] INPUT: "
 if /i "%oc%"=="f" goto send_feedback
@@ -230,9 +195,6 @@ goto about_owner
 
 :send_feedback
 cls
-color 0e
-echo [ TULIS FEEDBACK LU BUAT KnapQi ]
-echo.
 set /p "user_msg=Pesan: "
 if "%user_msg%"=="" goto about_owner
 powershell -Command "$msg = '**Feedback from %USERNAME%**\n%user_msg%'; $payload = @{content = $msg}; Invoke-RestMethod -Uri '%webhook_url%' -Method Post -Body ($payload | ConvertTo-Json) -ContentType 'application/json'"
