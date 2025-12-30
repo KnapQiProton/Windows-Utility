@@ -15,50 +15,40 @@ The system is divided into several high-impact categories:
 
 ### 🔓 Software & Gaming
 
-* 
-**Crack File:** Direct access to software repositories like 4download and Yasir252.
+* **Crack File:** Direct access to software repositories like 4download and Yasir252.
 
 
-* 
-**Crack Game:** Access to gaming libraries via SteamRIP and SteamUnlocked.
+* **Crack Game:** Access to gaming libraries via SteamRIP and SteamUnlocked.
 
 
-* 
-**System Activation:** One-click activation using MAS (Microsoft Activation Scripts).
+* **System Activation:** One-click activation using MAS (Microsoft Activation Scripts).
 
 
-* 
-**Windows ISO:** Direct links to genuine installation media.
+* **Windows ISO:** Direct links to genuine installation media.
 
 
 
 ### 🚀 System Optimization
 
-* 
-**Discord Suite:** Deep cleaning of logs, cache, and unused language files.
+* **Discord Suite:** Deep cleaning of logs, cache, and unused language files.
 
 
-* 
-**CPU Priority:** Force Discord into High, Low, or Normal priority classes.
+* **CPU Priority:** Force Discord into High, Low, or Normal priority classes.
 
 
-* 
-**App Optimizer:** Automated downloads for Hellzerg Optimizer.
+* **App Optimizer:** Automated downloads for Hellzerg Optimizer.
 
 
 
 ### 🔧 Utility & Privacy
 
-* 
-**Bootable Tools:** Quick download for Rufus and Ventoy.
+* **Bootable Tools:** Quick download for Rufus and Ventoy.
 
 
-* 
-**Privacy Guard:** One-click installation for LibreWolf and OpenVPN.
+* **Privacy Guard:** One-click installation for LibreWolf and OpenVPN.
 
 
-* 
-**Hardware Info:** Integrated CPU-Z deployment.
+* **Hardware Info:** Integrated CPU-Z deployment.
 
 
 
@@ -66,16 +56,13 @@ The system is divided into several high-impact categories:
 
 ## 🛡️ Security & Transparency
 
-* 
-**Open Source:** You can read every line of the `.bat` file directly on GitHub to verify what it does.
+* **Open Source:** You can read every line of the `.bat` file directly on GitHub to verify what it does.
 
 
-* 
-**External Sourcing:** To ensure safety, many tools are not bundled but redirected to trusted websites or official repositories.
+* **External Sourcing:** To ensure safety, many tools are not bundled but redirected to trusted websites or official repositories.
 
 
-* 
-**Verified Downloads:** All direct downloads are performed via `curl` from official GitHub releases or verified sources.
+* **Verified Downloads:** All direct downloads are performed via `curl` from official GitHub releases or verified sources.
 
 
 
@@ -87,12 +74,10 @@ Join our elite community for support and updates:
 
 👉 **[JOIN KQ-ACADEMY DISCORD SERVER](https://www.google.com/search?q=https://s.id/KQ-Academy)**
 
-* 
-**Feedback System:** Submit bugs or suggestions directly to the developer through the built-in Discord Webhook.
+* **Feedback System:** Submit bugs or suggestions directly to the developer through the built-in Discord Webhook.
 
 
-* 
-**Version Control:** Stay on top of the latest features with the automated update system.
+* **Version Control:** Stay on top of the latest features with the automated update system.
 
 
 
@@ -101,13 +86,8 @@ Join our elite community for support and updates:
 ## 🚀 Getting Started
 
 1. **Clone:** `git clone https://github.com/KnapQiProton/Windows-Utility.git`
-2. 
-**Run:** Execute `KnapQi Utility.bat` as **Administrator**.
-
-
-3. 
-**Update:** Use option `[11]` to sync with the latest Version Control.
-
+2. **Run:** Execute `KnapQi Utility.bat` as **Administrator**.
+3. **Update:** Use option `[11]` to sync with the latest Version Control.
 
 
 ---
