@@ -72,7 +72,7 @@ The system is divided into several high-impact categories:
 
 Join our elite community for support and updates:
 
-👉 **[JOIN KQ-ACADEMY DISCORD SERVER](https://www.google.com/search?q=https://s.id/KQ-Academy)**
+👉 **[JOIN KQ-ACADEMY DISCORD SERVER](https://s.id/KQ-Academy)**
 
 * **Feedback System:** Submit bugs or suggestions directly to the developer through the built-in Discord Webhook.
 
