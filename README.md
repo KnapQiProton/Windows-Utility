@@ -5,118 +5,114 @@
 > 
 > 
 
-**KNAPQI MULTIVERSE INTERFACE** is a high-performance, batch-based utility suite designed for power users who demand total control over their Windows environment. It streamlines system activation, software deployment, and deep application optimization into a single, lethal interface. 
+**KNAPQI MULTIVERSE INTERFACE** is a centralized hub for system utilities, optimization scripts, and software resources. Built for transparency, this tool provides a streamlined CLI experience to manage your Windows environment.
 
 ---
 
-## 🛡️ Transparency & Safety
+## 🛠️ Main Features Overview
 
-This project is built on the principle of **Security through Transparency**:
+The system is divided into several high-impact categories:
 
-* 
-**Open Source:** Every line of the `.bat` file is visible and can be audited directly by the user. 
-
+### 🔓 Software & Gaming
 
 * 
-**Safe Redirection:** Heavy resources (Cracks, ISOs, and Burners) are not bundled; instead, the script redirects you to trusted external websites. 
+**Crack File:** Direct access to software repositories like 4download and Yasir252.
 
 
 * 
-**Direct API Downloads:** Essential tools like Hellzerg Optimizer and Rufus are fetched directly from official GitHub repositories via `curl`. 
+**Crack Game:** Access to gaming libraries via SteamRIP and SteamUnlocked.
 
 
 * 
-**Zero Bloat:** No background services or hidden processes are installed. 
-
-
-
----
-
-## ⚡ Core Modules & Features
-
-The interface provides a categorized menu for rapid execution: 
-
-| Category | Description | Source/Method |
-| --- | --- | --- |
-| **Software Cracks** | Access to premium software via 4download and Yasir252. 
-
- | Web Redirect |
-| **Game Cracks** | Access to SteamRIP and SteamUnlocked for research. 
-
- | Web Redirect |
-| **System Activation** | Permanent Windows & Office activation via MAS. 
-
- | Direct PowerShell |
-| **Windows ISO** | Direct links to genuine installation media. 
-
- | Web Redirect |
-| **Bootable Tools** | Instant deployment of Rufus and Ventoy. 
-
- | `curl` Download |
-| **Privacy Tools** | Automated installation of LibreWolf and OpenVPN. 
-
- | `curl` Download |
-| **App Optimizer** | High-level system tuning via Discord Suite & Hellzerg. 
-
- | Local/Direct |
-
----
-
-## 🚀 Specialized: Discord Optimizer
-
-A deep-cleaning suite designed to strip Discord of its resource-heavy footprint: 
-
-* 
-**Module Debloater:** Removes non-essential Discord modules while maintaining core voice functionality. 
+**System Activation:** One-click activation using MAS (Microsoft Activation Scripts).
 
 
 * 
-**Locales Purge:** Deletes all unused language packages except for English (US). 
+**Windows ISO:** Direct links to genuine installation media.
+
+
+
+### 🚀 System Optimization
+
+* 
+**Discord Suite:** Deep cleaning of logs, cache, and unused language files.
 
 
 * 
-**Cache Shredder:** Wipes Logs, Crash Reports, and GPU/Code caches to save space. 
+**CPU Priority:** Force Discord into High, Low, or Normal priority classes.
 
 
 * 
-**CPU Priority:** Injects registry keys to force Discord into High Priority for zero-lag performance. 
+**App Optimizer:** Automated downloads for Hellzerg Optimizer.
+
+
+
+### 🔧 Utility & Privacy
+
+* 
+**Bootable Tools:** Quick download for Rufus and Ventoy.
+
+
+* 
+**Privacy Guard:** One-click installation for LibreWolf and OpenVPN.
+
+
+* 
+**Hardware Info:** Integrated CPU-Z deployment.
 
 
 
 ---
 
-## 🌐 Community & Support
-
-Join our elite community for updates, cybersecurity education, and support:
-
-👉 **[JOIN KQ-ACADEMY DISCORD SERVER](https://www.google.com/search?q=https://s.id/KQ-Academy)** 👈
+## 🛡️ Security & Transparency
 
 * 
-**Feedback:** Send reports directly to the developer via the built-in webhook system. 
+**Open Source:** You can read every line of the `.bat` file directly on GitHub to verify what it does.
 
 
 * 
-**Version Control:** Stay updated with the latest v13.0 features via the Update menu. 
+**External Sourcing:** To ensure safety, many tools are not bundled but redirected to trusted websites or official repositories.
+
+
+* 
+**Verified Downloads:** All direct downloads are performed via `curl` from official GitHub releases or verified sources.
 
 
 
 ---
 
-## 🛠️ Deployment
+## 🌐 Community & Connection
 
-1. **Download:** Grab the `KnapQi Utility.bat` file.
+Join our elite community for support and updates:
+
+👉 **[JOIN KQ-ACADEMY DISCORD SERVER](https://www.google.com/search?q=https://s.id/KQ-Academy)**
+
+* 
+**Feedback System:** Submit bugs or suggestions directly to the developer through the built-in Discord Webhook.
+
+
+* 
+**Version Control:** Stay on top of the latest features with the automated update system.
+
+
+
+---
+
+## 🚀 Getting Started
+
+1. **Clone:** `git clone https://github.com/KnapQiProton/Windows-Utility.git`
 2. 
-**Execute:** Run as **Administrator** to allow registry and system modifications. 
+**Run:** Execute `KnapQi Utility.bat` as **Administrator**.
 
 
 3. 
-**Navigate:** Use the numbered menu system to select your desired utility. 
+**Update:** Use option `[11]` to sync with the latest Version Control.
 
 
 
 ---
 
-> **Disclaimer:** This tool is for **Educational Purposes Only**. While the script is open-source and clean, use external links at your own discretion. 
+> **Disclaimer:** This tool is for **Educational Purposes Only**. Use at your own risk. 
 > 
 > 
 
