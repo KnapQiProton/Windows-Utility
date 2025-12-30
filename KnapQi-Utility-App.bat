@@ -1,11 +1,11 @@
 @echo off
-title KNAPQI MULTIVERSE INTERFACE - STABLE V12.1
+title KNAPQI MULTIVERSE INTERFACE - VERSION CONTROL V12.2
 mode con: cols=80 lines=40
 
 :: ========================================================================
 :: CONFIGURATION
 :: ========================================================================
-set "version=12.1"
+set "version=12.2"
 set "webhook_url=https://discord.com/api/webhooks/1455213173882753097/XihcbnWOY33qenhS-PW94Ibfkye9G-uBArL2CsiLUBmXG5gOF_zjq61nIEj7pc27yisq"
 set "update_url=https://raw.githubusercontent.com/KnapQiProton/Windows-Utility/refs/heads/main/KnapQi-Utility-App.bat"
 
@@ -28,7 +28,7 @@ echo.
 echo ---------------------------- SYSTEM OWNER ------------------------------
 echo.
 echo    [9]  ABOUT OWNER ^& FEEDBACK
-echo    [10] CHECK FOR UPDATES (GitHub Sync)
+echo    [10] CHECK FOR UPDATES (Archive Legacy Mode)
 echo    [11] EXIT SYSTEM
 echo.
 echo ========================================================================
@@ -48,14 +48,47 @@ if "%main_choice%"=="11" exit
 goto main_menu
 
 :: ========================================================================
-:: [1] SUB-MENU: CRACK FILE
+:: [10] UPDATE SYSTEM LOGIC (RENAME & ARCHIVE)
 :: ========================================================================
+:update_system
+cls
+color 0e
+echo ========================================================================
+echo                       SYSTEM UPDATE MANAGER
+echo ========================================================================
+echo.
+echo [+] Connecting to KnapQi GitHub Repository...
+echo [+] Current Version: %version%
+echo.
+
+:: 1. Download file terbaru dari GitHub
+curl -L -s -o "KnapQi-Updated-Version.bat" "%update_url%"
+
+if exist "KnapQi-Updated-Version.bat" (
+    echo [+] New version downloaded successfully.
+    echo [+] Archiving current version to 'Legacy-Version.old'...
+    
+    :: 2. Proses Rename & Restart
+    :: Kita pakai ping sebagai delay agar proses IO file lancar
+    start /b "" cmd /c "ping 127.0.0.1 -n 2 > nul & ren ""%~nx0"" ""Legacy-Version.old"" & start KnapQi-Updated-Version.bat"
+    
+    echo [+] Update complete! Transitioning to new interface...
+    timeout /t 2 > nul
+    exit
+) else (
+    echo [-] ERROR: Gagal terhubung ke GitHub.
+    pause
+    goto main_menu
+)
+
+:: ========================================================================
+:: [1-9] KATEGORI LAINNYA (TETAP SAMA SEPERTI VERSI SEBELUMNYA)
+:: ========================================================================
+
 :cat_file
 cls
 color 03
-echo ========================================================================
-echo    CATEGORY: CRACK FILE
-echo ========================================================================
+echo [ CATEGORY: CRACK FILE ]
 echo.
 echo    [1] 4download.net
 echo    [2] Yasir252.com
@@ -67,15 +100,10 @@ if "%fc%"=="2" start "" "https://www.yasir252.com/" & goto cat_file
 if "%fc%"=="3" goto main_menu
 goto cat_file
 
-:: ========================================================================
-:: [2] SUB-MENU: CRACK GAME
-:: ========================================================================
 :cat_game
 cls
 color 0c
-echo ========================================================================
-echo    CATEGORY: CRACK GAME
-echo ========================================================================
+echo [ CATEGORY: CRACK GAME ]
 echo.
 echo    [1] SteamRIP.com
 echo    [2] SteamUnlocked.net
@@ -87,15 +115,10 @@ if "%gc%"=="2" start "" "https://steamunlocked.net/" & goto cat_game
 if "%gc%"=="3" goto main_menu
 goto cat_game
 
-:: ========================================================================
-:: [3] SUB-MENU: SYSTEM ACTIVATION
-:: ========================================================================
 :cat_activation
 cls
 color 0a
-echo ========================================================================
-echo    CATEGORY: SYSTEM ACTIVATION
-echo ========================================================================
+echo [ CATEGORY: SYSTEM ACTIVATION ]
 echo.
 echo    [1] RUN MAS (Online Activation)
 echo    [2] [BACK TO MAIN MENU]
@@ -105,15 +128,10 @@ if "%ac%"=="1" powershell -Command "irm https://get.activated.win | iex" & pause
 if "%ac%"=="2" goto main_menu
 goto cat_activation
 
-:: ========================================================================
-:: [4] SUB-MENU: DOWNLOAD ISO
-:: ========================================================================
 :cat_iso
 cls
 color 09
-echo ========================================================================
-echo    CATEGORY: WINDOWS ISO
-echo ========================================================================
+echo [ CATEGORY: WINDOWS ISO ]
 echo.
 echo    [1] Open Massgrave Genuine Media
 echo    [2] [BACK TO MAIN MENU]
@@ -123,15 +141,10 @@ if "%ic%"=="1" start "" "https://massgrave.dev/genuine-installation-media" & got
 if "%ic%"=="2" goto main_menu
 goto cat_iso
 
-:: ========================================================================
-:: [5] SUB-MENU: BOOTABLE TOOLS
-:: ========================================================================
 :cat_burner_direct
 cls
 color 0b
-echo ========================================================================
-echo    CATEGORY: BOOTABLE TOOLS - DIRECT DOWNLOAD
-echo ========================================================================
+echo [ CATEGORY: BOOTABLE TOOLS ]
 echo.
 echo    [1] DOWNLOAD RUFUS
 echo    [2] DOWNLOAD VENTOY
@@ -145,15 +158,10 @@ if "%bc%"=="3" curl -L -o "balena.exe" "https://github.com/balena-io/etcher/rele
 if "%bc%"=="4" goto main_menu
 goto cat_burner_direct
 
-:: ========================================================================
-:: [6] SUB-MENU: PRIVACY TOOLS
-:: ========================================================================
 :cat_privacy
 cls
 color 0b
-echo ========================================================================
-echo    CATEGORY: PRIVACY TOOLS - DIRECT DOWNLOAD
-echo ========================================================================
+echo [ CATEGORY: PRIVACY TOOLS ]
 echo.
 echo    [1] DOWNLOAD LIBREWOLF
 echo    [2] DOWNLOAD OPENVPN
@@ -165,17 +173,12 @@ if "%pc%"=="2" curl -L -o "openvpn_setup.msi" "https://swupdate.openvpn.org/comm
 if "%pc%"=="3" goto main_menu
 goto cat_privacy
 
-:: ========================================================================
-:: [7] SUB-MENU: WINDOWS UTILITY
-:: ========================================================================
 :cat_utility
 cls
 color 0b
-echo ========================================================================
-echo    CATEGORY: WINDOWS UTILITY - DIRECT DOWNLOAD
-echo ========================================================================
+echo [ CATEGORY: WINDOWS UTILITY ]
 echo.
-echo    [1] DOWNLOAD CPU-Z (Portable ZIP)
+echo    [1] DOWNLOAD CPU-Z
 echo    [2] [BACK TO MAIN MENU]
 echo.
 set /p "uc=[?] SELECT TOOL: "
@@ -183,15 +186,10 @@ if "%uc%"=="1" curl -L -o "cpuz.zip" "https://download.cpuid.com/cpu-z/cpu-z_2.0
 if "%uc%"=="2" goto main_menu
 goto cat_utility
 
-:: ========================================================================
-:: [8] SUB-MENU: SEARCH ENGINE
-:: ========================================================================
 :cat_search
 cls
 color 0e
-echo ========================================================================
-echo    CATEGORY: SEARCH ENGINE
-echo ========================================================================
+echo [ CATEGORY: SEARCH ENGINE ]
 echo.
 echo    [1] Google
 echo    [2] DuckDuckGo
@@ -203,9 +201,6 @@ if "%sc%"=="2" start "" "https://duckduckgo.com" & goto cat_search
 if "%sc%"=="3" goto main_menu
 goto cat_search
 
-:: ========================================================================
-:: [9] ABOUT OWNER ^& FEEDBACK
-:: ========================================================================
 :about_owner
 cls
 color 0d
@@ -214,7 +209,6 @@ echo                      SYSTEM OWNER INFORMATION
 echo ========================================================================
 echo.
 echo    IDENTITITY : KnapQi
-echo    ROLE       : System Architect ^| Multiverse Dev
 echo    VERSION    : %version%
 echo.
 echo    "Too perfect to be controlled, too broken to be fixed."
@@ -235,36 +229,6 @@ echo [ TULIS FEEDBACK LU BUAT KnapQi ]
 echo.
 set /p "user_msg=Pesan: "
 if "%user_msg%"=="" goto about_owner
-echo.
-echo [+] Sending to Discord...
 powershell -Command "$msg = '**Feedback from %USERNAME%**\n%user_msg%'; $payload = @{content = $msg}; Invoke-RestMethod -Uri '%webhook_url%' -Method Post -Body ($payload | ConvertTo-Json) -ContentType 'application/json'"
 pause
 goto about_owner
-
-:: ========================================================================
-:: [10] UPDATE SYSTEM LOGIC (FIXED)
-:: ========================================================================
-:update_system
-cls
-color 0e
-echo ========================================================================
-echo                       SYSTEM UPDATE MANAGER
-echo ========================================================================
-echo.
-echo [+] Connecting to KnapQi GitHub Repository...
-echo [+] Current Version: %version%
-echo.
-curl -L -s -o "Update_Temp.bat" "%update_url%"
-if exist "Update_Temp.bat" (
-    echo [+] Update file found!
-    echo [+] Patching system...
-    echo [+] Interface will restart in 3 seconds.
-    timeout /t 3 > nul
-    :: Perbaikan kutip untuk handle spasi di path user
-    start /b "" cmd /c "timeout /t 1 & move /y Update_Temp.bat ""%~f0"" & start "" ""%~f0"""
-    exit
-) else (
-    echo [-] ERROR: Gagal mendapatkan file update.
-    pause
-    goto main_menu
-)
