@@ -95,5 +95,3 @@ Join our elite community for support and updates:
 > **Disclaimer:** This tool is for **Educational Purposes Only**. Use at your own risk. 
 > 
 > 
-
----
