@@ -1,6 +1,6 @@
 @echo off
-title KNAPQI MULTIVERSE INTERFACE - FINAL REVISION V17.2
-mode con: cols=85 lines=45
+title KNAPQI MULTIVERSE INTERFACE - FINAL REVISION V17.3
+mode con: cols=90 lines=48
 setlocal EnableDelayedExpansion
 
 :: ========================================================================
@@ -22,7 +22,7 @@ set "Reset=%ESC%[0m"
 :: ========================================================================
 :: CONFIGURATION
 :: ========================================================================
-set "version=17.2"
+set "version=17.3"
 set "webhook_url=https://discord.com/api/webhooks/1455213173882753097/XihcbnWOY33qenhS-PW94Ibfkye9G-uBArL2CsiLUBmXG5gOF_zjq61nIEj7pc27yisq"
 set "update_url=https://raw.githubusercontent.com/KnapQiProton/Windows-Utility/refs/heads/main/KnapQi-Utility-App.bat"
 set "github_url=https://github.com/KnapQiProton/Windows-Utility"
@@ -31,9 +31,9 @@ set "hellzerg_url=https://github.com/hellzerg/optimizer/releases/latest/download
 :main_menu
 cls
 color 0b
-echo ========================================================================
+echo ==========================================================================================
 echo             IDENTIFIED: KnapQi ^| VERSION: %version%
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  CRACK FILE (Software Web)
 echo    [2]  CRACK GAME (Gaming Web)
@@ -54,7 +54,7 @@ echo    [13] VIEW SOURCE / GITHUB
 echo    [14] CHECK FOR UPDATES
 echo    [15] EXIT SYSTEM
 echo.
-echo ========================================================================
+echo ==========================================================================================
 set /p "main_choice=[?] SELECT CATEGORY: "
 
 if "%main_choice%"=="1" goto cat_file
@@ -75,14 +75,57 @@ if "%main_choice%"=="15" exit
 goto main_menu
 
 :: ========================================================================
+:: DOWNLOAD ENGINE - TAMPILAN KEREN (dipanggil semua download)
+:: ========================================================================
+:dl_engine
+call :fancy_download
+goto %BACK_GOTO%
+
+:fancy_download
+cls
+echo.
+echo  %Blue%==========================================================================================%Reset%
+echo  %Cyan%                      %TITLE_DL% - DOWNLOAD MANAGER v%version%                      %Reset%
+echo  %Blue%==========================================================================================%Reset%
+echo.
+echo  %Grey%   Tanggal: %DATE%               Waktu: %TIME%   %Reset%
+echo.
+echo  %White%   Target      : %Cyan%%TITLE_DL%%Reset%
+echo  %White%   File output : %Yellow%%FILENAME%%Reset%
+echo  %White%   URL         : %Grey%%URL%%Reset%
+echo.
+echo  %Yellow%   Sedang mengunduh...%Reset%
+echo.
+echo  %Grey%Progress:%Reset%
+<nul set /p="  "
+curl -L -# -o "%FILENAME%" "%URL%"
+echo %Reset%
+echo.
+if exist "%FILENAME%" (
+    echo  %Green%==========================================================================================%Reset%
+    echo  %Green%                                DOWNLOAD BERHASIL!                                   %Reset%
+    echo  %Green%==========================================================================================%Reset%
+    echo  %White%   Lokasi file : %CD%\%FILENAME%
+    echo  %White%   Waktu selesai : %TIME%
+) else (
+    echo  %Red%==========================================================================================%Reset%
+    echo  %Red%                                  DOWNLOAD GAGAL!                                      %Reset%
+    echo  %Red%==========================================================================================%Reset%
+    echo  %Yellow%   Kemungkinan penyebab: koneksi buruk / URL salah / server down%Reset%
+)
+echo.
+pause
+goto :eof
+
+:: ========================================================================
 :: [5] BOOTABLE TOOLS
 :: ========================================================================
 :cat_burner_direct
 cls
 color 0b
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: BOOTABLE TOOLS ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  RUFUS
 echo    [2]  VENTOY
@@ -100,9 +143,9 @@ goto cat_burner_direct
 :cat_privacy
 cls
 color 0d
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: PRIVACY TOOLS ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  LIBREWOLF
 echo    [2]  OPENVPN
@@ -120,9 +163,9 @@ goto cat_privacy
 :cat_utility
 cls
 color 0b
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: WINDOWS UTILITY ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  CPU-Z
 echo    [2]  HWMonitor
@@ -140,9 +183,9 @@ goto cat_utility
 :cat_search
 cls
 color 0e
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: SEARCH ENGINE ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  Google
 echo    [2]  DuckDuckGo
@@ -160,9 +203,9 @@ goto cat_search
 :cat_optimizer
 cls
 color 09
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: APP OPTIMIZER ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  DISCORD OPTIMIZER
 echo    [2]  HELLZERG OPTIMIZER
@@ -175,14 +218,55 @@ if "%opt%"=="3" goto main_menu
 goto cat_optimizer
 
 :: ========================================================================
-:: [10] SYSTEM, NETWORK & LEARIX TOOLS (FIXED)
+:: DISCORD OPTIMIZER
+:: ========================================================================
+:discord_init
+set /a startver=0
+cd /d "%appdata%"
+for /f "delims=" %%a in ('dir /b /ad "Discord*" 2^>nul') do (
+    set /a startver+=1
+    set "version_list[!startver!]=%%a"
+    echo    [!startver!] %%a
+)
+if !startver!==0 (
+    echo %Red%[!] Discord tidak terdeteksi.%Reset%
+    pause & goto cat_optimizer
+)
+set /p "vernum=Pilih Nomor Version: "
+set "selected_discord=!version_list[%vernum%]!"
+if not defined selected_discord goto discord_init
+goto discord_menu
+
+:discord_menu
+cls
+echo %Cyan%[ DISCORD OPTIMIZER - !selected_discord! ]%Reset%
+echo.
+echo    [1]  Full Debloat ^& Clear Cache
+echo    [2]  Back
+echo.
+set /p "num=:"
+if "%num%"=="1" (
+    taskkill /F /IM "Discord.exe" /T >nul 2>&1
+    taskkill /F /IM "Update.exe" /T >nul 2>&1
+    rd /s /q "%appdata%\!selected_discord!\Cache" >nul 2>&1
+    rd /s /q "%appdata%\!selected_discord!\Code Cache" >nul 2>&1
+    rd /s /q "%appdata%\!selected_discord!\GPUCache" >nul 2>&1
+    echo %Green%[+] Discord Cache & Process berhasil dibersihkan.%Reset%
+    echo %Yellow%[!] Jalankan Discord kembali secara manual.%Reset%
+    pause
+    goto cat_optimizer
+)
+goto cat_optimizer
+
+:: ========================================================================
+:: [10] SYSTEM, NETWORK ^& LEARIX TOOLS
 :: ========================================================================
 :cat_sysnet
 cls
 color 0b
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: SYSTEM, NETWORK ^& LEARIX TOOLS ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  ADVANCED CLEANER (Learix Engine)
 echo    [2]  FPS BOOSTER (Registry Tweaks)
@@ -239,7 +323,7 @@ powershell -Command "Get-AppxPackage *spotify* | Remove-AppxPackage" >nul 2>&1
 powershell -Command "Get-AppxPackage *twitter* | Remove-AppxPackage" >nul 2>&1
 powershell -Command "Get-AppxPackage *xbox* | Remove-AppxPackage" >nul 2>&1
 echo %Green%[+] Common Bloatware Removed Safely.%Reset%
-echo %Yellow%[!] Apps can be reinstalled from Microsoft Store if needed.%Reset%
+echo %Yellow%[!] Apps bisa diinstall kembali dari Microsoft Store jika perlu.%Reset%
 pause
 goto cat_sysnet
 
@@ -247,10 +331,10 @@ goto cat_sysnet
 cls
 net session >nul 2>&1
 if %errorlevel% neq 0 (
-    echo %Red%[!] Administrator Permission Required! Run as Admin.%Reset%
+    echo %Red%[!] Harus dijalankan sebagai Administrator!%Reset%
     pause & goto cat_sysnet
 )
-echo %Cyan%[+] Detecting Active Network Interface...%Reset%
+echo %Cyan%[+] Mendeteksi interface jaringan aktif...%Reset%
 set "interface="
 for /f "tokens=2 delims=:" %%a in ('netsh interface show interface ^| findstr /i "Connected"') do (
     set "interface=%%a"
@@ -259,17 +343,17 @@ for /f "tokens=2 delims=:" %%a in ('netsh interface show interface ^| findstr /i
 )
 :found_interface
 if "!interface!"=="" (
-    echo %Red%[!] No Active Network Interface Found.%Reset%
+    echo %Red%[!] Tidak ada interface jaringan aktif.%Reset%
     pause & goto cat_sysnet
 )
-echo %Green%[+] Found Interface: !interface!%Reset%
+echo %Green%[+] Interface ditemukan: !interface!%Reset%
 echo %Cyan%[+] Refreshing Network Connection...%Reset%
 netsh interface set interface "!interface!" disable >nul 2>&1
 timeout /t 3 /nobreak >nul
 netsh interface set interface "!interface!" enable >nul 2>&1
 ipconfig /flushdns >nul 2>&1
 netsh winsock reset >nul 2>&1
-echo %Green%[+] Network Fully Refreshed!%Reset%
+echo %Green%[+] Network berhasil direfresh!%Reset%
 pause
 goto cat_sysnet
 
@@ -279,9 +363,9 @@ goto cat_sysnet
 :cat_browser
 cls
 color 0b
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: BROWSER INSTALLER ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  Google Chrome
 echo    [2]  Mozilla Firefox
@@ -296,54 +380,13 @@ if "%br%"=="4" goto main_menu
 goto cat_browser
 
 :: ========================================================================
-:: DISCORD OPTIMIZER IMPROVED
-:: ========================================================================
-:discord_init
-set /a startver=0
-cd /d "%appdata%"
-for /f "delims=" %%a in ('dir /b /ad "Discord*" 2^>nul') do (
-    set /a startver+=1
-    set "version_list[!startver!]=%%a"
-    echo    [!startver!] %%a
-)
-if !startver!==0 (
-    echo %Red%[!] Discord Not Installed or Not Detected.%Reset%
-    pause & goto cat_optimizer
-)
-set /p "vernum=Pilih Nomor Version: "
-set "selected_discord=!version_list[%vernum%]!"
-if not defined selected_discord goto discord_init
-goto discord_menu
-
-:discord_menu
-cls
-echo %Cyan%[ DISCORD OPTIMIZER - !selected_discord! ]%Reset%
-echo.
-echo    [1]  Full Debloat ^& Clear Cache
-echo    [2]  Back
-echo.
-set /p "num=:"
-if "%num%"=="1" (
-    taskkill /F /IM "Discord.exe" /T >nul 2>&1
-    taskkill /F /IM "Update.exe" /T >nul 2>&1
-    rd /s /q "%appdata%\!selected_discord!\Cache" >nul 2>&1
-    rd /s /q "%appdata%\!selected_discord!\Code Cache" >nul 2>&1
-    rd /s /q "%appdata%\!selected_discord!\GPUCache" >nul 2>&1
-    echo %Green%[+] Discord Cache Cleared ^& Process Terminated.%Reset%
-    echo %Yellow%[!] Restart Discord Manually.%Reset%
-    pause
-    goto cat_optimizer
-)
-goto cat_optimizer
-
-:: ========================================================================
 :: CRACK CATEGORIES
 :: ========================================================================
 :cat_file
 cls & color 03
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: CRACK FILE ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  4download.net
 echo    [2]  Yasir252.com
@@ -357,9 +400,9 @@ goto cat_file
 
 :cat_game
 cls & color 0c
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: CRACK GAME ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  SteamRIP.com
 echo    [2]  SteamUnlocked.net
@@ -377,9 +420,9 @@ goto cat_game
 :cat_activation
 cls
 color 0a
-echo ========================================================================
+echo ==========================================================================================
 echo [ CATEGORY: SYSTEM ACTIVATION ]
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [1]  RUN MAS (Online Activation)
 echo    [2]  BACK TO MAIN MENU
@@ -390,63 +433,26 @@ if "%ac%"=="2" goto main_menu
 goto cat_activation
 
 :: ========================================================================
-:: DOWNLOAD ENGINE
-:: ========================================================================
-:dl_engine
-cls
-echo.
-echo  %Blue%=================================================================================%Reset%
-echo  %Cyan%                           %TITLE_DL% DOWNLOAD MANAGER                            %Reset%
-echo  %Blue%=================================================================================%Reset%
-echo.
-echo  %Grey%   %DATE%                                                         %TIME%   %Reset%
-echo.
-echo  %White%   [INFO] Target App    : %Cyan%%TITLE_DL%%Reset%
-echo  %White%   [INFO] Nama File     : %Yellow%%FILENAME%%Reset%
-echo.
-echo  %White%   Status: %Yellow%Menghubungkan ke server...%Reset%
-echo.
-echo    %Grey%Progress:%Reset%
-<nul set /p="   %Cyan%"
-curl -L -# -o "%FILENAME%" "%URL%"
-echo %Reset%
-echo.
-if exist "%FILENAME%" (
-    echo  %Green%=================================================================================%Reset%
-    echo  %Green%                                DOWNLOAD SELESAI                                 %Reset%
-    echo  %Green%=================================================================================%Reset%
-    echo.
-    echo  %White%   [TIME] Waktu Selesai : %Green%%TIME%%Reset%
-    echo  %White%   [FILE] Lokasi        : %CD%\%FILENAME%
-) else (
-    echo  %Red%=================================================================================%Reset%
-    echo  %Red%                                 DOWNLOAD GAGAL                                  %Reset%
-    echo  %Red%=================================================================================%Reset%
-)
-pause
-goto %BACK_GOTO%
-
-:: ========================================================================
-:: ABOUT & UPDATE
+:: ABOUT & FEEDBACK
 :: ========================================================================
 :about_owner
 cls
 color 0d
-echo ========================================================================
+echo ==========================================================================================
 echo                      SYSTEM OWNER INFORMATION
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    DEVELOPER  : KnapQi
 echo    VERSION    : %version%
 echo.
 echo    "Too perfect to be controlled, too broken to be fixed."
 echo.
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo    [F] GIVE FEEDBACK
 echo    [M] BACK TO MAIN MENU
 echo.
-echo ========================================================================
+echo ==========================================================================================
 set /p "oc=[?] SELECT: "
 if /i "%oc%"=="f" goto send_feedback
 if /i "%oc%"=="m" goto main_menu
@@ -455,9 +461,9 @@ goto about_owner
 :send_feedback
 cls
 color 0e
-echo ========================================================================
+echo ==========================================================================================
 echo           GIVE FEEDBACK TO DEVELOPER (KNAPQI)
-echo ========================================================================
+echo ==========================================================================================
 echo.
 echo  Masukkan pesan feedback Anda di bawah ini:
 echo.
@@ -467,23 +473,26 @@ echo.
 echo  %Cyan%[+] Sedang mengirim ke Discord...%Reset%
 powershell -Command "$msg = \"**Feedback from %USERNAME%**`n%user_msg%\"; $payload = @{content = $msg}; Invoke-RestMethod -Uri '%webhook_url%' -Method Post -Body ($payload | ConvertTo-Json) -ContentType 'application/json'" >nul 2>&1
 echo.
-echo ========================================================================
+echo ==========================================================================================
 echo   %Green%PESAN TERKIRIM! Terima kasih sudah memberi feedback.%Reset%
-echo ========================================================================
+echo ==========================================================================================
 echo.
 pause
 goto main_menu
 
+:: ========================================================================
+:: UPDATE SYSTEM
+:: ========================================================================
 :update_system
 cls
-echo [+] Checking Updates...
+echo [+] Memeriksa pembaruan...
 curl -L -s -o "New.bat" "%update_url%"
 if exist "New.bat" (
-    echo [+] Update Found. Installing...
+    echo [+] Update ditemukan. Menginstal...
     pause
     start /b "" cmd /c "timeout /t 2 >nul & ren "%~nx0" "Backup.bat" & ren "New.bat" "%~nx0" & start "" "%~nx0""
     exit
 )
-echo [+] No Update Available.
+echo [+] Tidak ada pembaruan tersedia.
 pause
 goto main_menu
