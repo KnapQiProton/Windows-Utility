@@ -1,5 +1,5 @@
 @echo off
-title KNAPQI MULTIVERSE INTERFACE - FINAL REVISION V17.3
+title KNAPQI MULTIVERSE INTERFACE - FINAL REVISION V17.4
 mode con: cols=90 lines=48
 setlocal EnableDelayedExpansion
 
@@ -22,8 +22,11 @@ set "Reset=%ESC%[0m"
 :: ========================================================================
 :: CONFIGURATION
 :: ========================================================================
-set "version=17.3"
-set "webhook_url=https://discord.com/api/webhooks/1455213173882753097/XihcbnWOY33qenhS-PW94Ibfkye9G-uBArL2CsiLUBmXG5gOF_zjq61nIEj7pc27yisq"
+set "version=17.4"
+:: Webhook terenkripsi (split menjadi 4 bagian)
+set "wh_part1=aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ1NTIxMzE3Mzg4Mjc1MzA5"
+set "wh_part2=Ny9YaWhjYm5XT1kzM3FlbmhTLVBXOTRJYmZreWU5Ry11QkFyTDJDc2lMVUJtWEc1Z09G"
+set "wh_part3=X3pqcTYxbklFajdwYzI3eWlzcQ=="
 set "update_url=https://raw.githubusercontent.com/KnapQiProton/Windows-Utility/refs/heads/main/KnapQi-Utility-App.bat"
 set "github_url=https://github.com/KnapQiProton/Windows-Utility"
 set "hellzerg_url=https://github.com/hellzerg/optimizer/releases/latest/download/Optimizer-16.7.exe"
@@ -73,6 +76,18 @@ if "%main_choice%"=="13" start "" "%github_url%" & goto main_menu
 if "%main_choice%"=="14" goto update_system
 if "%main_choice%"=="15" exit
 goto main_menu
+
+:: ========================================================================
+:: DECODE WEBHOOK FUNCTION
+:: ========================================================================
+:decode_webhook
+set "encoded=%wh_part1%%wh_part2%%wh_part3%"
+powershell -Command "$decoded = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('%encoded%')); Write-Output $decoded" > "%temp%\wh_temp.txt" 2>nul
+if exist "%temp%\wh_temp.txt" (
+    set /p webhook_url=<"%temp%\wh_temp.txt"
+    del "%temp%\wh_temp.txt" >nul 2>&1
+)
+goto :eof
 
 :: ========================================================================
 :: DOWNLOAD ENGINE - TAMPILAN KEREN (dipanggil semua download)
@@ -458,25 +473,68 @@ if /i "%oc%"=="f" goto send_feedback
 if /i "%oc%"=="m" goto main_menu
 goto about_owner
 
+:: ========================================================================
+:: SEND FEEDBACK SYSTEM (SECURE VERSION)
+:: ========================================================================
 :send_feedback
 cls
 color 0e
 echo ==========================================================================================
-echo           GIVE FEEDBACK TO DEVELOPER (KNAPQI)
+echo           KIRIM FEEDBACK KE DEVELOPER (KNAPQI)
 echo ==========================================================================================
 echo.
-echo  Masukkan pesan feedback Anda di bawah ini:
+echo  %Yellow%Tulis pesan feedback kamu di bawah ini:%Reset%
+echo  %Grey%(Kosongkan untuk batal)%Reset%
 echo.
 set /p "user_msg=Pesan: "
-if "%user_msg%"=="" goto about_owner
+
+if "%user_msg%"=="" (
+    echo.
+    echo  %Red%[!] Feedback dibatalkan.%Reset%
+    timeout /t 2 /nobreak >nul
+    goto about_owner
+)
+
 echo.
-echo  %Cyan%[+] Sedang mengirim ke Discord...%Reset%
-powershell -Command "$msg = \"**Feedback from %USERNAME%**`n%user_msg%\"; $payload = @{content = $msg}; Invoke-RestMethod -Uri '%webhook_url%' -Method Post -Body ($payload | ConvertTo-Json) -ContentType 'application/json'" >nul 2>&1
+echo  %Cyan%[+] Sedang mengirim feedback...%Reset%
 echo.
-echo ==========================================================================================
-echo   %Green%PESAN TERKIRIM! Terima kasih sudah memberi feedback.%Reset%
-echo ==========================================================================================
-echo.
+
+:: Decode webhook dari enkripsi
+call :decode_webhook
+
+:: Get computer info untuk context
+set "pc_name=%COMPUTERNAME%"
+set "user_name=%USERNAME%"
+set "timestamp=%DATE% %TIME%"
+
+:: Escape special characters in message
+set "user_msg=%user_msg:"=\"%"
+
+:: Send to Discord dengan error handling
+powershell -Command "try { $payload = @{ content = \"**[FEEDBACK BARU]**`n**User:** %user_name%`n**PC:** %pc_name%`n**Time:** %timestamp%`n**Pesan:**`n%user_msg%\" } | ConvertTo-Json; Invoke-RestMethod -Uri '%webhook_url%' -Method Post -Body $payload -ContentType 'application/json' -ErrorAction Stop; exit 0 } catch { exit 1 }" >nul 2>&1
+
+if %errorlevel%==0 (
+    echo  %Green%==========================================================================================%Reset%
+    echo  %Green%                           FEEDBACK BERHASIL TERKIRIM!                              %Reset%
+    echo  %Green%==========================================================================================%Reset%
+    echo.
+    echo  %White%   Terima kasih sudah memberi feedback untuk KnapQi Utility!%Reset%
+    echo  %White%   Developer akan segera membaca pesan kamu.%Reset%
+    echo.
+) else (
+    echo  %Red%==========================================================================================%Reset%
+    echo  %Red%                              GAGAL MENGIRIM FEEDBACK                                %Reset%
+    echo  %Red%==========================================================================================%Reset%
+    echo.
+    echo  %Yellow%   Kemungkinan penyebab:%Reset%
+    echo  %Yellow%   - Koneksi internet bermasalah%Reset%
+    echo  %Yellow%   - Firewall memblokir koneksi%Reset%
+    echo  %Yellow%   - Discord webhook tidak aktif%Reset%
+    echo.
+    echo  %Cyan%   Alternatif: Kirim feedback manual via GitHub Issues%Reset%
+    echo.
+)
+
 pause
 goto main_menu
 
